@@ -14,18 +14,23 @@ server.use(cors());
 server.use(express.json());
 
 server.post('/sign-up', (request, response) => {
-  if (!request.body.username || !request.body.avatar) {
+  if (
+    !request.body.username
+    || !request.body.avatar
+    || typeof request.body.username !== 'string'
+    || typeof request.body.avatar !== 'string'
+  ) {
     return response.status(CODE_BAD_REQUEST).send('Todos os campos são obrigatórios!');
   }
 
   users.push(request.body);
 
-  response.send(request.body);
-  response.status(CODE_CREATED).send('OK');
+  response.status(CODE_CREATED).send(request.body);
+  response.send('OK');
 });
 
 server.post('/tweets', (request, response) => {
-  if (!request.body.username || !request.body.tweet) {
+  if (!request.body.username || !request.body.tweet || typeof request.body.tweet !== 'string') {
     return response.status(CODE_BAD_REQUEST).send('Todos os campos são obrigatórios!');
   }
 
@@ -38,8 +43,8 @@ server.post('/tweets', (request, response) => {
 
   tweets.push(request.body);
 
-  response.send(request.body);
-  response.status(CODE_CREATED).send('OK');
+  response.status(CODE_CREATED).send(request.body);
+  response.send('OK');
 });
 
 server.get('/tweets', (request, response) => {
