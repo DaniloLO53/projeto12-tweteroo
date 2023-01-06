@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import tweets from './model/tweet.model.js';
 import users from './model/user.model.js';
 
@@ -8,6 +9,7 @@ const CODE_NOT_FOUND = 400;
 const CODE_OK = 200;
 
 const server = express();
+server.use(cors());
 server.use(express.json());
 
 server.post('/sign-up', (request, response) => {
