@@ -45,8 +45,6 @@ server.get('/tweets', (request, response) => {
     return users.find(({ username }) => tweet.username === username).avatar
   });
 
-  // console.log(avatars, users)
-
   last10Tweets.forEach((tweet, index) => tweet.avatar = avatars[index]);
 
   response.send(last10Tweets);
