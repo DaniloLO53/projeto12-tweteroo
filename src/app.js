@@ -5,8 +5,9 @@ import users from './model/user.model.js';
 
 const PORT = 5000;
 
-const CODE_NOT_FOUND = 400;
+const CODE_BAD_REQUEST = 400;
 const CODE_OK = 200;
+const CODE_CREATED = 201;
 
 const server = express();
 server.use(cors());
@@ -14,18 +15,20 @@ server.use(express.json());
 
 server.post('/sign-up', (request, response) => {
   if (!request.body.username || !request.body.avatar) {
-    return response.status(CODE_NOT_FOUND).json({
-      error: 'Missing avatar or username',
-    })
+    return response.status(CODE_BAD_REQUEST).send('Todos os campos são obrigatórios!');
   }
 
   users.push(request.body);
 
   response.send(request.body);
-  response.status(201).send('OK');
+  response.status(CODE_CREATED).send('OK');
 });
 
 server.post('/tweets', (request, response) => {
+  if (!request.body.username || !request.body.tweet) {
+    return response.status(CODE_BAD_REQUEST).send('Todos os campos são obrigatórios!');
+  }
+
   const user = request.body.username;
   const isSignedUp = users.some(({ username }) => username === user);
 
@@ -36,7 +39,7 @@ server.post('/tweets', (request, response) => {
   tweets.push(request.body);
 
   response.send(request.body);
-  response.status(201).send('OK');
+  response.status(CODE_CREATED).send('OK');
 });
 
 server.get('/tweets', (request, response) => {
